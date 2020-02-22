@@ -1,0 +1,49 @@
+Instruction
+-----------
+
+1. .env.example rename to .env
+2. Modify database connection
+3. php artisan key:generate << Now the profile can view
+4. Create & Design layout pages
+5. Define the route
+7. Create Model -m (php artisan make:model model_name -m)
+8. Modify migration & fillable
+9. Create db seed (php artisan make:seed UsersTableSeeder, php artisan db:seed) and fill user data
+10. Make controller & method (php artisan make:controller controller_name)
+11. Define user & route relationship
+12. Define scopeAvailableRoutes & scopeAvailableOffers in Route
+11. Fill route seed data
+12. Do available route
+13. Do requested route
+14. Do my route offered
+15. Do my route booked
+
+Warning
+-------
+
+
+Things to remember
+------------------
+1. return redirect()->intended('/'); // back to homepage
+2. csrf_field()
+3. Auth::check(), Auth::guest(), Auth::login(), Auth::logout()
+4. $user = User::where(['username' => $username, 'password' => $password])->first();
+5. <a href="{{ route('account.login') }}">Login</a>
+6. use Illuminate\Support\Facades\Auth; use in controller
+7. @extends('layout.masterpage') @yield('content') @section('content')
+8.public function passenger() {
+        return $this->hasMany('App\Route', 'passenger_id');
+}
+9. 	public function passenger() {
+		return $this->belongsTo('App\User', 'passenger_id', 'id');
+	}
+10. public function scopeAvailableOffers() {
+    	return $this->where(['passenger_id' => null, 'route_type' => 'ao'])->whereDate('route_datetime', '>=', date('Y-m-d H:i:s'))->whereNotNull('driver_id');
+    }
+11. DB::table('users')->truncate();
+12. $routes = Route::with('users')->availableOffers()->latest()->get();
+    return view('main.available_offer', compact('routes'));
+13. use Redirect;  return Redirect::to(route('route.available_offer'))->with('msg', 'Successfully Booked Route');
+14. Session::get('msg')
+15. $route = new User(); $route->xxx = xxx; $route->save();
+16. substr($request->route_datetime, 14, 2) != '00'
